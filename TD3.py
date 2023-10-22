@@ -343,7 +343,7 @@ window.mainloop()
 # each of them at the top of the window, as well as the distance scale). 
 # In this exercise, you will obviously use Newton's law of universal gravitation
 
-# In[142]:
+# In[229]:
 
 
 import math
@@ -358,6 +358,12 @@ mass_star2 = 5.05e16
 # Initial positions of stars
 x1, y1 = 20, 20
 x2, y2 = 50, 170
+
+STAR1_RADIUS = 20
+STAR2_RADIUS = 15
+
+star1_speed = 10
+star2_speed = 10
 
 # Function to update the canvas with the current positions of stars
 def update_canvas():
@@ -407,6 +413,31 @@ def move_star1(dx, dy, star):
     update_canvas()
     update_labels()
 
+def move_star_up(dx, dy, star):
+    global x1, y1, x2, y2
+    if star == 1:
+        y1 -= star1_speed
+        move_star_up_down(x1, y1, star)
+    else:
+        y2 -= star2_speed
+        move_star_up_down(x2, y2, star)
+    update_canvas()
+    update_labels()
+        
+def move_star_down(dx, dy, star):
+    global x1, y1, x2, y2
+    if star == 1:
+        y1 += star1_speed
+        move_star_up_down(x1, y1, star)
+    else:
+        y2 += star2_speed
+        move_star_up_down(x2, y2, star)
+    update_canvas()
+    update_labels()
+        
+def move_star_up_down(dx, dy, star):
+    canvas.coords(star, dx - STAR1_RADIUS, dy - STAR1_RADIUS, dx + STAR1_RADIUS, dy + STAR1_RADIUS)
+    
 root = tk.Tk()
 root.title("Two Stars and Gravitational Force")
 
@@ -434,6 +465,14 @@ move_star3_button.pack(side="left")
 move_star4_button = tk.Button(root, text="Star 2 left", command=lambda: move_star1(10, 0, 2))
 move_star4_button.pack(side="left")
 
+move_star3_button = tk.Button(root, text="Star 1 up", command=lambda: move_star_up(10, 0, 1))
+move_star3_button.pack(side="left")
+move_star3_button = tk.Button(root, text="Star 2 up", command=lambda: move_star_up(10, 0, 2))
+move_star3_button.pack(side="left")
+move_star3_button = tk.Button(root, text="Star 1 down", command=lambda: move_star_down(10, 0, 1))
+move_star3_button.pack(side="right")
+move_star3_button = tk.Button(root, text="Star 2 down", command=lambda: move_star_down(10, 0, 2))
+move_star3_button.pack(side="right")
 
 quit_button = tk.Button(root, text="Quit", command=root.destroy)
 quit_button.pack()
